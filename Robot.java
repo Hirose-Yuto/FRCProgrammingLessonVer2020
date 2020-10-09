@@ -1,5 +1,7 @@
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
@@ -14,6 +16,8 @@ public class Robot extends TimedRobot {
   VictorSPX driveLeftBackMotor, driveRightBackMotor;
   DifferentialDrive drive;
 
+  TalonSRX arm;
+
   @Override
   public void robotInit() {
     controller = new XboxController(0);
@@ -27,6 +31,8 @@ public class Robot extends TimedRobot {
     driveRightBackMotor.follow(driveRightFrontMotor);
 
     drive = new DifferentialDrive(driveLeftFrontMotor, driveRightFrontMotor);
+
+    arm = new TalonSRX(3);
   }
 
 	@Override
@@ -44,6 +50,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     drive.arcadeDrive(-controller.getY(Hand.kLeft), controller.getX(Hand.kLeft));
+    arm.set(ControlMode.PercentOutput, -controller.getY(Hand.kRight));
   }
   
   @Override
